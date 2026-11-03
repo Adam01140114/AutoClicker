@@ -1,0 +1,4 @@
+# Build output — build.sh regenerates all of it, including the icon.
+build/
+
+.DS_Store
