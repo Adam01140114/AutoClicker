@@ -6,25 +6,36 @@ replay it as many times as you like, at half, normal or double speed. Press
 
 Native Swift and SwiftUI, no dependencies. macOS 14 or later.
 
-## Setting it up on another Mac
+## Install
 
-You need Xcode's command line tools for `swiftc`:
+One line in Terminal, on any Mac running macOS 14 or later:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Adam01140114/AutoClicker/main/install.sh | bash
+```
+
+That downloads the latest release, installs it into `/Applications` and opens
+it. No Xcode, no git, no clone. The same line installs updates later.
+
+The release is a universal build, so it runs on Apple Silicon and Intel alike.
+The installer clears the quarantine flag macOS puts on anything downloaded,
+which is what otherwise makes it refuse to open an app that is only ad-hoc
+signed.
+
+## Building it yourself
+
+Only needed if you are changing the code. Requires Xcode's command line tools
+for `swiftc`:
 
 ```bash
 xcode-select --install
-```
-
-Then clone and build — the script compiles the app and installs it into
-`/Applications` (or `~/Applications` if that isn't writable):
-
-```bash
 git clone https://github.com/Adam01140114/AutoClicker.git
 cd AutoClicker && ./build.sh
 ```
 
-Building on each Mac rather than copying the `.app` across keeps the binary
-native to that machine's architecture and avoids Gatekeeper quarantining a
-bundle that arrived over the network.
+`build.sh` compiles both architectures, lipos them into one universal binary,
+signs the bundle and installs it. To cut a new release for the other Mac to
+pick up, run `./release.sh`.
 
 ## Permissions
 
@@ -53,5 +64,8 @@ Sources/SettingsView.swift  repeat count and playback speed
 Sources/Permissions.swift   Accessibility + Input Monitoring state and prompts
 Sources/AppDelegate.swift   window setup and defaults
 tools/make-icon.swift       draws the app icon; build.sh turns it into .icns
-build.sh                    build, sign, install
+build.sh                    build universal, sign, install
+package.sh                  build without installing, zip the bundle
+install.sh                  the one-liner: fetch a release and install it
+release.sh                  build, zip and publish a GitHub release
 ```
